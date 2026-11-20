@@ -1,0 +1,35 @@
+name: tests
+
+# The port's tests, on every push and pull request. No game files are
+# needed and none are used: tools/test.sh builds each unit test against
+# src/ with the runner's Command Line Tools.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show the Mac
+        run: sw_vers && uname -m
+
+      # The runtime's headers, for the two tests that read them. Without it
+      # tools/test.sh reports those two as skipped instead of failing.
+      - name: Fetch the pinned x86recomp runtime
+        run: tools/fetch_runtime.sh || echo "runtime not fetched: two tests will be skipped"
+
+      - name: Unit tests and the tools' Python tests
+        run: tools/test.sh
+
+      - name: Every script parses
+        run: |
+          for f in install.sh tools/*.sh; do bash -n "$f" || exit 1; done
+          for f in install-ios.sh tools/ios_*.sh; do zsh -n "$f" || exit 1; done
+
+      - name: The installer's checks run without a game
+        run: ./install.sh --check || test $? -eq 1

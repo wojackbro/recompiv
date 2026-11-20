@@ -1,5 +1,5 @@
 #!/bin/zsh
-# make_builder.sh: makes "Liberty Pro Max Builder.app", the app that builds
+# make_builder.sh: makes "RecompIV Builder.app", the app that builds
 # the game on a Mac with nothing but Apple's Command Line Tools.
 #
 #   GTAIV_GAME_DIR=/path/to/game builder/make_builder.sh
@@ -60,8 +60,8 @@ cp -R src $kit/src
 rsync -a vendor/x86recomp/src/ $kit/include/runtime/  # headers, and lifted_table.cpp
 cp -R $deps/include $kit/include/deps
 cp $deps/lib/*.a $kit/lib/
-app="$kit/app/Liberty Pro Max.app"
-ditto "$kitbuild/Liberty Pro Max.app" "$app"
+app="$kit/app/RecompIV.app"
+ditto "$kitbuild/RecompIV.app" "$app"
 rm -f "$app/Contents/MacOS/gtaiv"
 # Nothing of the game in the kit: not the icon made from its artwork either.
 rm -f "$app/Contents/Resources/AppIcon.icns"
@@ -73,12 +73,12 @@ for f in "$app"/Contents/Frameworks/*.dylib $kit/bin/recomp_lift; do
   done
 done
 # The lifter loads librecomp_image.dylib from the app's Frameworks.
-install_name_tool -add_rpath "@executable_path/../app/Liberty Pro Max.app/Contents/Frameworks" $kit/bin/recomp_lift
+install_name_tool -add_rpath "@executable_path/../app/RecompIV.app/Contents/Frameworks" $kit/bin/recomp_lift
 python3 builder/make_recipe.py $kitbuild $here $deps $kit
 
 say "Builder"
 dev=${XCODE_DEVELOPER_DIR:-$(xcode-select -p)}
-b="$outdir/Liberty Pro Max Builder.app"
+b="$outdir/RecompIV Builder.app"
 mkdir -p "$b/Contents/MacOS" "$b/Contents/Resources"
 DEVELOPER_DIR=$dev xcrun swiftc -O -parse-as-library -target arm64-apple-macos14.0 -swift-version 5 \
   builder/Sources/*.swift -o "$b/Contents/MacOS/Builder"
@@ -95,11 +95,11 @@ find "$b/Contents/Resources/kit" -type f -print0 | while IFS= read -r -d '' f; d
 done
 codesign --force $opts --sign "$sign" "$b"
 codesign --verify --strict "$b"
-(cd $outdir && ditto -c -k --keepParent "Liberty Pro Max Builder.app" "Liberty Pro Max Builder.zip")
+(cd $outdir && ditto -c -k --keepParent "RecompIV Builder.app" "RecompIV Builder.zip")
 if [[ -n ${NOTARY_PROFILE:-} ]]; then
-  xcrun notarytool submit "$outdir/Liberty Pro Max Builder.zip" --keychain-profile $NOTARY_PROFILE --wait
+  xcrun notarytool submit "$outdir/RecompIV Builder.zip" --keychain-profile $NOTARY_PROFILE --wait
   xcrun stapler staple "$b"
-  (cd $outdir && rm -f "Liberty Pro Max Builder.zip" &&
-   ditto -c -k --keepParent "Liberty Pro Max Builder.app" "Liberty Pro Max Builder.zip")
+  (cd $outdir && rm -f "RecompIV Builder.zip" &&
+   ditto -c -k --keepParent "RecompIV Builder.app" "RecompIV Builder.zip")
 fi
-echo "builder: $outdir/Liberty Pro Max Builder.zip ($(du -sh "$outdir/Liberty Pro Max Builder.zip" | cut -f1))"
+echo "builder: $outdir/RecompIV Builder.zip ($(du -sh "$outdir/RecompIV Builder.zip" | cut -f1))"

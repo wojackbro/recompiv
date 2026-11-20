@@ -1,5 +1,5 @@
 // Saves through iCloud Drive (GTAIV_SAVE_SYNC, on): the iPad app's
-// iCloud container (shown in iCloud Drive as "Liberty Pro Max") holds a
+// iCloud container (shown in iCloud Drive as "RecompIV") holds a
 // copy of every save, and each device, Mac and iPad, keeps its own saves
 // and that copy in step:
 //   - at start, before the game reads its saves: newer copies come down;
@@ -14,8 +14,8 @@
 //
 // The container: the iPad app's own (its entitlement); on the Mac, the
 // folder iCloud Drive keeps for it under ~/Library/Mobile Documents
-// (GTAIV_ICLOUD_CONTAINER: its name, e.g. iCloud~io~github~you~libertypromax;
-// default: the one there with "libertypromax" in its name).
+// (GTAIV_ICLOUD_CONTAINER: its name, e.g. iCloud~io~github~you~recompiv;
+// default: the one there with "recompiv" in its name).
 
 #import <CommonCrypto/CommonDigest.h>
 #import <Foundation/Foundation.h>
@@ -68,7 +68,7 @@ NSString* CloudDir() {
     if (const char* e = std::getenv("GTAIV_ICLOUD_CONTAINER"); e && *e) name = @(e);
     if (!name)
       for (NSString* n in [fm contentsOfDirectoryAtPath:mobile error:nil])
-        if ([n rangeOfString:@"libertypromax"].location != NSNotFound) name = n;
+        if ([n rangeOfString:@"recompiv"].location != NSNotFound) name = n;
     if (!name) return nil;
     return [[mobile stringByAppendingPathComponent:name] stringByAppendingPathComponent:@"Documents"];
 #else

@@ -1,13 +1,13 @@
 #!/bin/zsh
 # install-ios.sh [--ipad | --iphone | --tv] TEAM_ID [BUNDLE_ID]
-# Builds Liberty Pro Max for the iPad or iPhone connected by cable (the iPad
+# Builds RecompIV for the iPad or iPhone connected by cable (the iPad
 # when both are; --ipad or --iphone says which. --tv: the Apple TV paired
 # with Xcode), installs it and copies the game's files (15 GB) into it. Run
 # ./install.sh first: this build uses the game's code it translated
 # (generated/).
 #   TEAM_ID    your Apple developer team (Xcode > Settings > Accounts)
-#   BUNDLE_ID  the app's identifier (default io.github.<team>.libertypromax,
-#              .libertypromax.tv for the Apple TV)
+#   BUNDLE_ID  the app's identifier (default io.github.<team>.recompiv,
+#              .recompiv.tv for the Apple TV)
 # Needs a paid Apple developer account signed in to Xcode, the device in
 # Developer Mode.
 set -euo pipefail
@@ -24,12 +24,12 @@ case ${1:-} in
 esac
 team=${1:-}; [[ -n $team ]] || die "give your Apple developer team id: ./install-ios.sh [--ipad | --iphone | --tv] TEAM_ID"
 if (( tv )); then
-  p=tvos kind="Apple TV" preset=appletvos profile=libertypromax-tvos data=Library/Caches
-  bundle=${2:-io.github.${(L)team}.libertypromax.tv}
+  p=tvos kind="Apple TV" preset=appletvos profile=recompiv-tvos data=Library/Caches
+  bundle=${2:-io.github.${(L)team}.recompiv.tv}
 else
   # (kind: which of the two is found below.)
-  p=ios kind=${want:-iPad or iPhone} preset=iphoneos profile=libertypromax data=Documents
-  bundle=${2:-io.github.${(L)team}.libertypromax}
+  p=ios kind=${want:-iPad or iPhone} preset=iphoneos profile=recompiv data=Documents
+  bundle=${2:-io.github.${(L)team}.recompiv}
 fi
 [[ -f tools/local.env ]] && . tools/local.env
 [[ -n ${GTAIV_GAME_DIR:-} && -f $GTAIV_GAME_DIR/GTAIV.exe ]] || die "run ./install.sh first (it remembers the game folder)"
@@ -108,11 +108,11 @@ fi
 
 say "Done"
 if (( tv )); then
-  echo "Open Liberty Pro Max on the Apple TV (it starts the game directly). A controller plays it."
+  echo "Open RecompIV on the Apple TV (it starts the game directly). A controller plays it."
 else
   if [[ $kind == iPhone ]]; then
-    echo "Open Liberty Pro Max on the iPhone, press Play. A controller or a keyboard plays it best: the touch controls are the iPad's, small on a phone."
+    echo "Open RecompIV on the iPhone, press Play. A controller or a keyboard plays it best: the touch controls are the iPad's, small on a phone."
   else
-    echo "Open Liberty Pro Max on the iPad, press Play. The touch controls, a controller or a keyboard play it."
+    echo "Open RecompIV on the iPad, press Play. The touch controls, a controller or a keyboard play it."
   fi
 fi

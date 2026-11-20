@@ -2,7 +2,7 @@
 // (GTAIV_SAVE_SYNC, the launcher's "Saves synced" option, on): before the
 // game starts (the launcher) and after it quits (main.cpp), the Mac finds
 // its paired devices with this port's app (a bundle id with
-// "libertypromax") through Xcode's devicectl, by cable or network, and per
+// "recompiv") through Xcode's devicectl, by cable or network, and per
 // save file (savegames/user_*/SGTA4nn and ControlMap.dat) the newer copy
 // wins: copied to the side that has an older one or none. A Mac copy about
 // to be replaced is kept first in <data>/save-backups/<time>/. Files are
@@ -158,7 +158,7 @@ extern "C" void GtaivSyncSaves(const char* when) {
       NSDictionary* apps = Devicectl(@[ @"device", @"info", @"apps", @"--device", device ]);
       for (NSDictionary* a in apps[@"apps"]) {
         NSString* bundle = a[@"bundleIdentifier"];
-        if ([bundle rangeOfString:@"libertypromax"].location == NSNotFound) continue;
+        if ([bundle rangeOfString:@"recompiv"].location == NSNotFound) continue;
         // Its data: Documents/gtaiv on the iPad, Library/Caches/gtaiv on Apple TV.
         NSString* data = [platform isEqual:@"tvOS"] ? @"Library/Caches/gtaiv" : @"Documents/gtaiv";
         SyncDevice(device, name, bundle, [data stringByAppendingPathComponent:kSavesRel], localRoot, backups);

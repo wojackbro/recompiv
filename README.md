@@ -1,6 +1,15 @@
-# Liberty Pro Max
+# RecompIV
 
-**Grand Theft Auto IV (PC 1.0.8.0) running natively on Apple silicon Macs and iPads, and experimentally on the iPhone and Apple TV.**
+**Grand Theft Auto IV (PC 1.0.8.0) statically recompiled to run natively on
+Apple silicon Macs and iPads, and experimentally on the iPhone and Apple TV:
+a Metal renderer, the episodes, about 100 fixes, saves through iCloud.**
+
+RecompIV is a fork of [Liberty Pro Max](https://github.com/Awis13/liberty-pro-max)
+by Awis13 and its contributors, who did the recompilation, the renderer and the
+fixes; that work is theirs. This fork keeps it and adds what makes it easier to
+pick up: an installer that checks the Mac and the game files before a long
+build, a test runner that needs no game data, and the original's bugs tracked in
+[KNOWN-ISSUES.md](KNOWN-ISSUES.md).
 
 The game's own x86 code is statically recompiled with
 [x86recomp](https://github.com/JTM-rootstorm/x86recomp) to C++ and built for
@@ -15,20 +24,46 @@ all of the port's options, Game Mode and ultrawide screens on the Mac.
 **Beta.** The story can be played from a save and around the city on the Mac
 and the iPad; the iPhone and the Apple TV are experimental.
 Expect rough edges, and please report what you find in the
-[issues](https://github.com/Awis13/liberty-pro-max/issues).
+[issues](https://github.com/wojakbro/recompiv/issues).
 
 ## Quick start
 
-1. Download **Liberty Pro Max Builder** from the
-   [releases](https://github.com/Awis13/liberty-pro-max/releases) and open it.
-   It is not signed by Apple: the first time, go to System Settings, Privacy &
-   Security, and press **Open Anyway**.
-2. Drop your Grand Theft Auto IV folder (or `GTAIV.exe`) on it. If asked,
-   install Apple's Command Line Tools with its button (free).
-3. Press **Build Liberty Pro Max**. About 5 to 20 minutes later it is in
-   Applications: open it, check the options, press **Play**.
+RecompIV is built on your own Mac from your own copy of GTA IV. Nothing is
+prebuilt and downloadable: the build translates your own `GTAIV.exe`, so it
+cannot be shipped. This fork also does not ship the Builder app the original
+project offers; the Terminal installer is the way in.
+
+```sh
+git clone https://github.com/wojakbro/recompiv
+cd recompiv
+./install.sh --check "/path/to/Grand Theft Auto IV"   # looks; builds nothing
+./install.sh "/path/to/Grand Theft Auto IV"           # about 15 minutes
+```
+
+`--check` says what is missing before anything is installed or compiled. The
+full run installs the build tools from Homebrew, fetches the pinned x86recomp,
+checks your `GTAIV.exe`, translates the game's code, builds, and puts
+**RecompIV** in `/Applications`: open it, check the options, press **Play**.
+
+RecompIV and Liberty Pro Max use the same saves folder
+(`~/Library/Application Support/gtaiv`), so saves carry over between them
+in both directions.
 
 For the iPad, the iPhone and the Apple TV, see [Install](#install).
+
+## What this fork changes
+
+| | |
+|---|---|
+| **Checks first** | `./install.sh --check` (or `tools/doctor.sh`) checks macOS, the Apple silicon chip, the Command Line Tools, Homebrew, the build tools, the free space, `GTAIV.exe`'s SHA-256, the game's `pc` and `common` folders, the episodes' file lists and `commandline.txt`, and names what is missing instead of failing halfway through a 15-minute build |
+| **Tests without the game** | `tools/test.sh` builds and runs every unit test and the tools' Python tests with nothing but the Command Line Tools: no game files, no SDL3, no FFmpeg, no CMake configure |
+| **Runtime pinned, fetchable alone** | `tools/fetch_runtime.sh` fetches the x86recomp commit in `X86RECOMP` by itself, for tests and for a build without the rest of the installer |
+| **Bugs tracked** | The original's open issues, and what this fork does about each, are in [KNOWN-ISSUES.md](KNOWN-ISSUES.md) |
+| **Names** | The app is `RecompIV.app` (bundle id `io.github.wojakbro.recompiv`, iCloud container and iOS/tvOS profiles renamed with it). The options, the log (`~/Library/Logs/gtaiv.log`), the saves folder and the `GTAIV_*` environment variables keep the original's names, so anything written for Liberty Pro Max applies here |
+
+Nothing else is different: the same lifted code path, the same renderer, the
+same fixes, the same game.
+
 
 ## What you get
 
@@ -90,22 +125,22 @@ iPad's touch controls are there too, but small on a phone).
 
 ### Mac, with the Builder
 
-See [Quick start](#quick-start). The Builder carries everything that is not
-the game's code (the runtime, its libraries, the translator) and compiles only
-what it translates from your own `GTAIV.exe`, with Apple's compiler; no
-Homebrew. `builder/make_builder.sh` makes it.
+This fork ships no Builder build. The Builder source is still here
+(`builder/make_builder.sh`), and it needs the same Homebrew tools as
+`install.sh` plus full Xcode; see [Quick start](#quick-start) for the
+installer instead.
 
 ### Mac, from the Terminal
 
 ```bash
-git clone https://github.com/Awis13/liberty-pro-max
-cd liberty-pro-max
+git clone https://github.com/wojakbro/recompiv
+cd recompiv
 ./install.sh "/path/to/Grand Theft Auto IV"
 ```
 
 `install.sh` installs the build tools from Homebrew, fetches the pinned
 x86recomp, checks your `GTAIV.exe`, translates the game's code, builds, and
-puts **Liberty Pro Max** in `/Applications`, with an icon made from the logo
+puts **RecompIV** in `/Applications`, with an icon made from the logo
 in your game files (the Builder's app has the standard icon for now). The first run takes about 15
 minutes on an M-series Mac. Run it again after `git pull` to update.
 
@@ -139,7 +174,7 @@ with its icon and installs it, then copies the game's files (15 GB) into it
 over the cable, and your mods if you have any on the Mac.
 The first run takes about 40 minutes.
 
-Then open **Liberty Pro Max** on the iPad, check the settings, press
+Then open **RecompIV** on the iPad, check the settings, press
 **Play**. The defaults are 1792×1344 with SMAA at 60 fps; the game's own
 graphics menu decides the rest: lower its view and detail distance if busy
 streets drop below 60. **Frame limit** is 60, 40, 30 or Off; Off leaves the
@@ -185,7 +220,7 @@ as on the iPad.
 ### Saves on every device
 
 With iCloud Drive on, the iPad and the iPhone keep a copy of every save in
-their iCloud folder (**Liberty Pro Max** in iCloud Drive) and the Mac uses the
+their iCloud folder (**RecompIV** in iCloud Drive) and the Mac uses the
 same folder: each device takes the newer saves when the game starts and sends
 its own while it runs and when it quits. Per save the newer one wins; the
 one it replaces, on either side, is kept in that folder's `Backups`.
@@ -314,7 +349,7 @@ space (all of it and the process heap, then its textures, buffers and shared
 heap); `GTAIV_FPS_REPORT=30` writes the frame rate:
 
 ```bash
-GTAIV_MEM_REPORT=30 "/Applications/Liberty Pro Max.app/Contents/MacOS/gtaiv"
+GTAIV_MEM_REPORT=30 "/Applications/RecompIV.app/Contents/MacOS/gtaiv"
 ```
 
 Every option of the launcher's table, shown or hidden, is set by the launcher
@@ -325,7 +360,7 @@ not all the launcher's (continuing the last save, for one, is off; the Metal
 renderer needs `GTAIV_GFX=metal`):
 
 ```bash
-GTAIV_GFX=metal GTAIV_NAME=1 "/Applications/Liberty Pro Max.app/Contents/MacOS/gtaiv" \
+GTAIV_GFX=metal GTAIV_NAME=1 "/Applications/RecompIV.app/Contents/MacOS/gtaiv" \
   --no-launcher --game-dir "/path/to/Grand Theft Auto IV"
 ```
 
@@ -599,6 +634,9 @@ keyboard lighting, graphics API choice and plugin loaders have nothing to do.
 
 ## Known issues
 
+The original's open reports and what this fork has done about each are in
+[KNOWN-ISSUES.md](KNOWN-ISSUES.md). The port's own limits:
+
 - Mac, iPad and (experimental) iPhone and Apple TV for now. Linux and the Steam Deck are planned.
 - iPad: busy streets need the game's view and detail distances lowered for a steady 60 fps.
 - iPhone: best with a controller or a keyboard (the touch controls are the
@@ -623,7 +661,7 @@ tools/lift.sh                                              # the game's code to 
 cmake --preset release && cmake --build --preset release   # the game
 ```
 
-The app is `out/build/release/Liberty Pro Max.app`; the plain executable,
+The app is `out/build/release/RecompIV.app`; the plain executable,
 `out/build/release/gtaiv --game-dir "$GTAIV_GAME_DIR"`, starts without the
 launcher. For the app's icon, before the last build (with Pillow):
 `python3 tools/make_ios_icon.py "$GTAIV_GAME_DIR" out/icons --mac`.
@@ -681,6 +719,11 @@ Measured on an M3 Pro at 3440×1440, maximum settings, on the same street:
 
 ## Credits
 
+- [Liberty Pro Max](https://github.com/Awis13/liberty-pro-max) by Awis13 and
+  its contributors: the port this one is forked from, and nearly all of what
+  is here. Report bugs in *this* fork to
+  [its issues](https://github.com/wojakbro/recompiv/issues); report what is
+  wrong with the port itself upstream too, so it is fixed for everyone.
 - [x86recomp](https://github.com/JTM-rootstorm/x86recomp), the static
   recompiler this port is built on.
 - [FusionFix](https://github.com/ThirteenAG/GTAIV.EFLC.FusionFix) by

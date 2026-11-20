@@ -1,4 +1,4 @@
-// Liberty Pro Max Builder: drop your GTA IV in, get the Mac app out.
+// RecompIV Builder: drop your GTA IV in, get the Mac app out.
 
 import SwiftUI
 import UniformTypeIdentifiers
@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 @main
 enum Main {
   static func main() {
-    // Liberty Pro Max Builder --build GAME_FOLDER: the same build without the
+    // RecompIV Builder --build GAME_FOLDER: the same build without the
     // window, its log on stdout (for testing the kit); exit status 0 when
     // the app was installed.
     let args = CommandLine.arguments
@@ -36,7 +36,7 @@ struct BuilderApp: App {
   @StateObject private var engine = Engine()
 
   var body: some Scene {
-    Window("Liberty Pro Max Builder", id: "main") {
+    Window("RecompIV Builder", id: "main") {
       ContentView()
         .environmentObject(engine)
         .frame(width: 620)
@@ -53,7 +53,7 @@ struct ContentView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 18) {
       VStack(alignment: .leading, spacing: 4) {
-        Text("Liberty Pro Max").font(.system(size: 26, weight: .bold))
+        Text("RecompIV").font(.system(size: 26, weight: .bold))
         Text("Builds Grand Theft Auto IV for your Mac from your own copy of the game.")
           .foregroundStyle(.secondary)
       }
@@ -84,7 +84,7 @@ struct ContentView: View {
       HStack(spacing: 10) {
         Image(systemName: "checkmark.seal.fill").foregroundStyle(.green).font(.title2)
         VStack(alignment: .leading) {
-          Text("Liberty Pro Max is ready").font(.headline)
+          Text("RecompIV is ready").font(.headline)
           Text(app.deletingLastPathComponent().path).font(.caption).foregroundStyle(.secondary)
         }
         Spacer()
@@ -113,7 +113,7 @@ struct ContentView: View {
           Text("The finished app goes to Applications.").foregroundStyle(.secondary)
         }
         Spacer()
-        Button("Build Liberty Pro Max") { engine.build() }
+        Button("Build RecompIV") { engine.build() }
           .keyboardShortcut(.defaultAction)
           .controlSize(.large)
           .disabled(!engine.canBuild)

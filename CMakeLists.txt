@@ -97,7 +97,7 @@ if(TARGET gtaiv_lifted)
     set_source_files_properties(src/launcher_mac.mm src/save_sync_mac.mm src/save_cloud.mm
                                 PROPERTIES COMPILE_OPTIONS "-fobjc-arc")
     target_link_libraries(gtaiv PRIVATE "-framework AppKit")
-    # "Liberty Pro Max.app" next to the plain executable: a bundle that says
+    # "RecompIV.app" next to the plain executable: a bundle that says
     # it is a game (macos/Info.plist), so that macOS turns Game Mode on
     # while it runs full screen in front. Its executable is the same build;
     # x86recomp's libraries go in Contents/Frameworks so the app can be
@@ -105,7 +105,7 @@ if(TARGET gtaiv_lifted)
     # Its icon is out/icons/AppIcon.icns when that has been made
     # (tools/make_ios_icon.py --mac, from the player's game files).
     set_property(TARGET gtaiv APPEND PROPERTY BUILD_RPATH "@executable_path/../Frameworks")
-    set(app "${CMAKE_BINARY_DIR}/Liberty Pro Max.app")
+    set(app "${CMAKE_BINARY_DIR}/RecompIV.app")
     add_custom_command(TARGET gtaiv POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E make_directory "${app}/Contents/MacOS" "${app}/Contents/Frameworks"
       COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/macos/Info.plist"

@@ -98,7 +98,7 @@ typedef NS_ENUM(NSInteger, LpmSection) { kGame, kExtrasSection, kGraphics, kFixe
   logo.contentMode = UIViewContentModeScaleAspectFit;
   logo.translatesAutoresizingMaskIntoConstraints = NO;
   UILabel* title = [UILabel new];
-  title.text = @"Liberty Pro Max";
+  title.text = @"RecompIV";
   title.font = [UIFont systemFontOfSize:34 weight:UIFontWeightBold];
   title.textColor = UIColor.whiteColor;
   title.translatesAutoresizingMaskIntoConstraints = NO;

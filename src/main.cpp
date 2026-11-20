@@ -9,7 +9,7 @@
 // Started by a launcher (--no-launcher; always on iOS) the game also gets
 // the port's defaults and the player's commandline.txt first (game_args.h).
 // Set GTAIV_TRACE=1 to log every HLE call.
-// Run from "Liberty Pro Max.app", a launcher window comes first
+// Run from "RecompIV.app", a launcher window comes first
 // (launcher_mac.mm); --no-launcher skips it.
 
 #include <sys/stat.h>
@@ -246,7 +246,7 @@ int main(int argc, char** argv) {
   // setting whose budget exceeds it (it beeps and reverts). The most a
   // signed 32-bit byte count holds.
   game.video_memory_mb = 2047;
-  // Full screen as macOS does it: Game Mode turns on (Liberty Pro Max.app).
+  // Full screen as macOS does it: Game Mode turns on (RecompIV.app).
 #if !GTAIV_IOS
   // (A Space stays below a display's notch: the launcher's choice of a
   // borderless window over all of it.)

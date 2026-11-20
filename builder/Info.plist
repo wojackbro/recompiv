@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key><string>en</string>
-	<key>CFBundleDisplayName</key><string>Liberty Pro Max Builder</string>
+	<key>CFBundleDisplayName</key><string>RecompIV Builder</string>
 	<key>CFBundleExecutable</key><string>Builder</string>
-	<key>CFBundleIdentifier</key><string>io.github.awis13.liberty-pro-max.builder</string>
+	<key>CFBundleIdentifier</key><string>io.github.wojakbro.recompiv.builder</string>
 	<key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
-	<key>CFBundleName</key><string>Liberty Pro Max Builder</string>
+	<key>CFBundleName</key><string>RecompIV Builder</string>
 	<key>CFBundlePackageType</key><string>APPL</string>
 	<key>CFBundleShortVersionString</key><string>0.2</string>
 	<key>CFBundleVersion</key><string>1</string>

@@ -3,19 +3,19 @@
 # A development provisioning profile for the iPad app, with the two
 # capabilities the game needs: extended virtual addressing (its 4 GB of
 # guest memory) and the increased memory limit (tvOS has only the first;
-# PLATFORM=tvos makes the Apple TV's, libertypromax-tvos.mobileprovision). App Store Connect's API
+# PLATFORM=tvos makes the Apple TV's, recompiv-tvos.mobileprovision). App Store Connect's API
 # cannot turn those on, so a stub app with them is built once with Xcode's
 # automatic signing (your Apple ID signed in under Xcode > Settings >
 # Accounts; a paid developer account); its profile is kept as
-# $GTAIV_APPLE_BUILD/profiles/libertypromax.mobileprovision.
+# $GTAIV_APPLE_BUILD/profiles/recompiv.mobileprovision.
 set -euo pipefail
 here=${0:A:h:h}
 team=$1 bundle=$2 device=$3
 w=${GTAIV_APPLE_BUILD:-$here/out/apple}
 if [[ ${PLATFORM:-ios} == tvos ]]; then
-  os=tvOS family=3 ent=LibertyProMax-tvOS.entitlements name=libertypromax-tvos
+  os=tvOS family=3 ent=RecompIV-tvOS.entitlements name=recompiv-tvos
 else
-  os=iOS family=1,2 ent=LibertyProMax.entitlements name=libertypromax
+  os=iOS family=1,2 ent=RecompIV.entitlements name=recompiv
 fi
 stub=$w/profile-stub
 rm -rf $stub && mkdir -p $stub/Stub $w/profiles
@@ -38,7 +38,7 @@ YML
 cp $here/port/ios/$ent $stub/Stub/Stub.entitlements
 cat > $stub/Stub/StubApp.swift <<'SWIFT'
 import SwiftUI
-@main struct StubApp: App { var body: some Scene { WindowGroup { Text("Liberty Pro Max") } } }
+@main struct StubApp: App { var body: some Scene { WindowGroup { Text("RecompIV") } } }
 SWIFT
 (cd $stub && xcodegen generate -q)
 xcodebuild -project $stub/Stub.xcodeproj -scheme Stub -destination "id=$device" \

@@ -1,4 +1,4 @@
-// The Mac app's launcher: the first window of "Liberty Pro Max.app". It
+// The Mac app's launcher: the first window of "RecompIV.app". It
 // picks the game folder and the port's options, then starts the game as a
 // new instance of the app with them (--no-launcher, through Launch
 // Services): the game gets a process of its own from the start, so options
@@ -217,11 +217,11 @@ constexpr CGFloat kWindowWidth = 760, kNoteWidth = 520;
                                             styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
                                               backing:NSBackingStoreBuffered
                                                 defer:NO];
-  self.window.title = @"Liberty Pro Max";
+  self.window.title = @"RecompIV";
   self.window.releasedWhenClosed = NO;
   self.window.delegate = self;
 
-  NSTextField* title = [NSTextField labelWithString:@"Liberty Pro Max"];
+  NSTextField* title = [NSTextField labelWithString:@"RecompIV"];
   title.font = [NSFont systemFontOfSize:22 weight:NSFontWeightBold];
   NSTextField* subtitle = [NSTextField labelWithString:@"Grand Theft Auto IV, running natively on your Mac"];
   subtitle.textColor = NSColor.secondaryLabelColor;
@@ -666,7 +666,7 @@ void RunLauncherIfWanted(int argc, char** argv) {
       [d setBool:YES forKey:kChangesOnlyKey];
     }
     // The folder: given, else the last one, else the repository's run/game
-    // next to the build ("out/build/<preset>/Liberty Pro Max.app").
+    // next to the build ("out/build/<preset>/RecompIV.app").
     NSString* folder = args.game_dir ?: [d stringForKey:kFolderKey];
     if (!HasGame(folder)) {
       NSString* repo = [[[NSBundle.mainBundle.bundlePath stringByDeletingLastPathComponent]
@@ -687,7 +687,7 @@ void RunLauncherIfWanted(int argc, char** argv) {
     NSMenuItem* appItem = [NSMenuItem new];
     [bar addItem:appItem];
     NSMenu* appMenu = [NSMenu new];
-    NSMenuItem* quitItem = [appMenu addItemWithTitle:@"Quit Liberty Pro Max" action:@selector(quit:) keyEquivalent:@"q"];
+    NSMenuItem* quitItem = [appMenu addItemWithTitle:@"Quit RecompIV" action:@selector(quit:) keyEquivalent:@"q"];
     appItem.submenu = appMenu;
     NSApp.mainMenu = bar;
 

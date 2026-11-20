@@ -19,7 +19,7 @@ import subprocess
 import sys
 
 build, source, deps, kit = (os.path.realpath(a) for a in sys.argv[1:5])
-app_fw = '@KIT@/app/Liberty Pro Max.app/Contents/Frameworks'
+app_fw = '@KIT@/app/RecompIV.app/Contents/Frameworks'
 # (Resolved: vendor/x86recomp or the deps may be reached through a link.)
 places = tuple((os.path.realpath(p), ph) for p, ph in (
     (os.path.join(source, 'generated'), '@WORK@/generated'),

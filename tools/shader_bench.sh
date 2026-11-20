@@ -39,7 +39,7 @@
 # clear weather, the player standing facing east.
 #
 # Options:
-#   --app PATH          the app (default out/build/release/Liberty Pro Max.app)
+#   --app PATH          the app (default out/build/release/RecompIV.app)
 #   --game-dir DIR      the game's files
 #   --save FILE         the save loaded (as SGTA405, GTAIV_CONTINUE)
 #   --bench SCENE       x,y,z,heading[,hour,weather] for GTAIV_BENCH
@@ -57,7 +57,7 @@ set -u
 
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 FARM=${SHADER_BENCH_FARM:-/Volumes/USB-Samsung/Games/farm/farm}  # (another for tests)
-APP="$REPO/out/build/release/Liberty Pro Max.app"
+APP="$REPO/out/build/release/RecompIV.app"
 GAME_DIR="/Volumes/USB-Samsung/Games/GTAIV-ipad-bcd/Grand Theft Auto IV"
 SAVE="/Volumes/USB-Samsung/Games/scratch/episodes/saves-dl/x/GTA IV and EFLC 100%/IV/SGTA400"
 BENCH="-421.9,1494,18.9,90,13,1"

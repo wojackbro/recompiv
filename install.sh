@@ -1,9 +1,12 @@
 #!/bin/bash
-# install.sh: build Liberty Pro Max from your own copy of GTA IV (PC 1.0.8.0)
-# and put "Liberty Pro Max.app" in /Applications.
+# install.sh: build RecompIV from your own copy of GTA IV (PC 1.0.8.0) and
+# put "RecompIV.app" in /Applications.
+#
 #   ./install.sh "/path/to/Grand Theft Auto IV"
+#   ./install.sh --check ["/path/to/Grand Theft Auto IV"]   look, install nothing
+#
 # The game folder is remembered (tools/local.env); later runs, after a
-# `git pull`, need no argument.
+# `git pull`, need no argument. Running it again rebuilds and reinstalls.
 set -euo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 cd "$here"
@@ -11,32 +14,58 @@ cd "$here"
 say() { printf '\n\033[1m==> %s\033[0m\n' "$*"; }
 die() { printf '\n\033[31merror:\033[0m %s\n' "$*" >&2; exit 1; }
 
-[ "$(uname -s)" = Darwin ] || die "Liberty Pro Max builds on macOS."
-[ "$(uname -m)" = arm64 ] || die "Liberty Pro Max needs a Mac with Apple silicon."
-major=$(sw_vers -productVersion | cut -d. -f1)
-[ "$major" -ge 14 ] || die "macOS 14 or newer is needed."
+usage() {
+  cat <<EOF
+usage: ./install.sh [--check] ["/path/to/Grand Theft Auto IV"]
+
+  --check   check this Mac and the game folder, install and build nothing
+  -h        this text
+
+Builds the game from your own GTA IV (PC 1.0.8.0, the one with GTAIV.exe),
+then puts RecompIV in /Applications. Nothing of the game is in this
+repository: the build translates your own GTAIV.exe.
+EOF
+}
+
+check=0
+game=
+for a in "$@"; do
+  case $a in
+    --check|--doctor) check=1 ;;
+    -h|--help) usage; exit 0 ;;
+    -*) die "unknown option: $a (try --help)" ;;
+    *) game=$a ;;
+  esac
+done
+
+[ "$(uname -s)" = Darwin ] || die "RecompIV builds on macOS."
+[ "$(uname -m)" = arm64 ] || die "RecompIV needs a Mac with Apple silicon."
 
 [ -f tools/local.env ] && . tools/local.env
-if [ $# -ge 1 ]; then GTAIV_GAME_DIR=$(cd "$1" && pwd); fi
+if [ -n "$game" ]; then GTAIV_GAME_DIR=$(cd "$game" && pwd); fi
+
+if [ "$check" = 1 ]; then
+  exec "$here/tools/doctor.sh" "${GTAIV_GAME_DIR:-}"
+fi
+
 [ -n "${GTAIV_GAME_DIR:-}" ] || die "give the game folder (the one with GTAIV.exe): ./install.sh \"/path/to/Grand Theft Auto IV\""
+
+say "Checking this Mac and the game folder"
+if ! "$here/tools/doctor.sh" "$GTAIV_GAME_DIR"; then
+  die "something needed is missing (above). Fix it and run this again; --check repeats only the checks."
+fi
+
 [ -f "$GTAIV_GAME_DIR/GTAIV.exe" ] || die "no GTAIV.exe in $GTAIV_GAME_DIR"
-[ "$(shasum -a 256 "$GTAIV_GAME_DIR/GTAIV.exe" | cut -d' ' -f1)" = 3d90e7c516fa450ca002e5031e62c0f66b404590f33e6cc9793b0da4fffbfd0f ] ||
-  die "this GTAIV.exe is not the one supported: version 1.0.8.0 as Rockstar signed it"
 printf 'GTAIV_GAME_DIR=%q\n' "$GTAIV_GAME_DIR" > tools/local.env
 export GTAIV_GAME_DIR
+export PATH="/opt/homebrew/bin:$PATH"
 
 say "Build tools"
-xcode-select -p >/dev/null 2>&1 || die "install the Xcode Command Line Tools first: xcode-select --install"
 command -v brew >/dev/null 2>&1 || die "install Homebrew first: https://brew.sh"
 brew install cmake ninja sdl3 ffmpeg llvm@22 glslang spirv-cross python
 
 say "x86recomp"
-pin=$(cut -d' ' -f2 X86RECOMP)
-if [ ! -d vendor/x86recomp/.git ]; then
-  git clone --branch liberty https://github.com/Awis13/x86recomp vendor/x86recomp
-fi
-git -C vendor/x86recomp fetch --quiet origin liberty
-git -C vendor/x86recomp checkout --quiet "$pin"
+tools/fetch_runtime.sh
 
 say "Lifter and runtime (first build)"
 cmake --preset release >/dev/null
@@ -57,23 +86,25 @@ cmake --preset release >/dev/null
 cmake --build --preset release
 
 say "Installing to /Applications"
-app="out/build/release/Liberty Pro Max.app"
+app="out/build/release/RecompIV.app"
 [ -d "$app" ] || die "the build made no app: $app"
-rm -rf "/Applications/Liberty Pro Max.app"
-ditto "$app" "/Applications/Liberty Pro Max.app"
+rm -rf "/Applications/RecompIV.app"
+ditto "$app" "/Applications/RecompIV.app"
 # (The build puts the icon in only when it links the game anew.)
 if [ -f "$icon" ]; then
-  mkdir -p "/Applications/Liberty Pro Max.app/Contents/Resources"
-  cp -f "$icon" "/Applications/Liberty Pro Max.app/Contents/Resources/"
+  mkdir -p "/Applications/RecompIV.app/Contents/Resources"
+  cp -f "$icon" "/Applications/RecompIV.app/Contents/Resources/"
 fi
-codesign --force --sign - "/Applications/Liberty Pro Max.app" >/dev/null 2>&1 || true
+codesign --force --sign - "/Applications/RecompIV.app" >/dev/null 2>&1 || true
 
 say "Done"
 cat <<EOF
-Open "Liberty Pro Max" from Applications (or Launchpad), pick the game
-folder in the launcher if asked, and press Play.
+Open "RecompIV" from Applications (or Launchpad), pick the game folder in
+the launcher if asked, and press Play.
 
 Game folder: $GTAIV_GAME_DIR
 Saves and settings: ~/Library/Application Support/gtaiv
 Log: ~/Library/Logs/gtaiv.log
+
+If something looks wrong: ./install.sh --check, and README.md > If something goes wrong.
 EOF

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Liberty Pro Max</string>
+	<string>RecompIV</string>
 	<key>CFBundleExecutable</key>
 	<string>gtaiv</string>
 	<!-- Contents/Resources/AppIcon.icns, made from the player's own game
@@ -13,11 +13,11 @@
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.github.awis13.liberty-pro-max</string>
+	<string>io.github.wojakbro.recompiv</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Liberty Pro Max</string>
+	<string>RecompIV</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

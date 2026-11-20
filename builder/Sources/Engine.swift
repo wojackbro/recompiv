@@ -1,6 +1,6 @@
 // What the Builder does: checks the game and the developer tools, then
 // translates the player's GTAIV.exe, compiles and links it with the kit and
-// puts Liberty Pro Max.app in Applications.
+// puts RecompIV.app in Applications.
 
 import AppKit
 import CryptoKit
@@ -35,7 +35,7 @@ final class Engine: ObservableObject {
   // BUILDER_WORK, BUILDER_DEST: another work folder and destination (tests).
   nonisolated static let work: URL = ProcessInfo.processInfo.environment["BUILDER_WORK"].map { URL(fileURLWithPath: $0) }
     ?? FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-      .appendingPathComponent("Liberty Pro Max Builder")
+      .appendingPathComponent("RecompIV Builder")
   nonisolated static let destination: String = ProcessInfo.processInfo.environment["BUILDER_DEST"] ?? "/Applications"
   private var toolsTimer: Timer?
   private var toolsSince: Date?
@@ -114,7 +114,7 @@ final class Engine: ObservableObject {
       game = .ok("GTAIV.exe 1.0.8.0: \(folder.path)")
       UserDefaults.standard.set(folder.path, forKey: "GameFolder")
     } else {
-      game = .bad("This GTAIV.exe is not the one Liberty Pro Max supports: version 1.0.8.0 as Rockstar "
+      game = .bad("This GTAIV.exe is not the one RecompIV supports: version 1.0.8.0 as Rockstar "
                   + "signed it. A changed exe or the Complete Edition (1.2.0.x) is not accepted.")
     }
   }

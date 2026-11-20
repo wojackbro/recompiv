@@ -1,7 +1,7 @@
 #!/bin/zsh
 # ios_bundle.sh [device id]
 # Turns the iPad build (cmake --preset iphoneos), or with PLATFORM=tvos the
-# Apple TV one (cmake --preset appletvos), into a signed Liberty Pro Max.app
+# Apple TV one (cmake --preset appletvos), into a signed RecompIV.app
 # and, given a device id, installs it:
 #   - the runtime's dylibs and SDL3 into Frameworks/;
 #   - the icon through an asset catalog (ICONS/icon1024.png, tvOS: ICONS/tvos/);
@@ -10,7 +10,7 @@
 # copies them into the app's Documents/game over the cable.
 # Machine settings come from the environment (or tools/local.env):
 #   GTAIV_APPLE_BUILD  the root of the Apple builds (default out/apple):
-#                      build-ios, prefix-ios, profiles/libertypromax.mobileprovision
+#                      build-ios, prefix-ios, profiles/recompiv.mobileprovision
 #                      and the app made here (out/)
 #   BUILD, PREFIX, OUT, PROFILE  any one of those, set apart
 # The app's bundle identifier is the profile's (its App ID without the team).
@@ -23,12 +23,12 @@ device=$1
 w=${GTAIV_APPLE_BUILD:-$here/out/apple}
 if [[ ${PLATFORM:-ios} == tvos ]]; then
   : ${BUILD:=$w/build-tvos} ${PREFIX:=$w/prefix-tvos} ${OUT:=$w/out-tvos}
-  : ${PROFILE:=$w/profiles/libertypromax-tvos.mobileprovision}
-  entitlements=$here/port/ios/LibertyProMax-tvOS.entitlements
+  : ${PROFILE:=$w/profiles/recompiv-tvos.mobileprovision}
+  entitlements=$here/port/ios/RecompIV-tvOS.entitlements
 else
   : ${BUILD:=$w/build-ios} ${PREFIX:=$w/prefix-ios} ${OUT:=$w/out}
-  : ${PROFILE:=$w/profiles/libertypromax.mobileprovision}
-  entitlements=$here/port/ios/LibertyProMax.entitlements
+  : ${PROFILE:=$w/profiles/recompiv.mobileprovision}
+  entitlements=$here/port/ios/RecompIV.entitlements
 fi
 : ${ICONS:=$here/out/icons}
 # Default identity: a valid one whose certificate is in the profile.
@@ -42,7 +42,7 @@ fi
 [[ -n $SIGN_ID ]] || { echo "no Apple Development signing identity; set SIGN_ID" >&2; exit 1; }
 [[ -d $BUILD/gtaiv.app ]] || { echo "build first: $BUILD/gtaiv.app" >&2; exit 1; }
 
-app=$OUT/LibertyProMax.app
+app=$OUT/RecompIV.app
 mkdir -p $OUT
 rsync -a --delete --exclude Frameworks $BUILD/gtaiv.app/ $app/
 
@@ -101,7 +101,7 @@ for k in application-identifier com.apple.developer.team-identifier; do
   /usr/libexec/PlistBuddy -c "Add :$k string $v" $ent
 done
 # iCloud Drive for the saves (src/save_cloud.mm): the app's own container,
-# iCloud.<bundle id>, shown in iCloud Drive as "Liberty Pro Max" (and so on
+# iCloud.<bundle id>, shown in iCloud Drive as "RecompIV" (and so on
 # the Mac too). Left out when the profile has no iCloud (the saves then
 # stay on the device).
 container=iCloud.${appid#*.}
@@ -111,7 +111,7 @@ if /usr/libexec/PlistBuddy -c "Print :com.apple.developer.ubiquity-container-ide
   /usr/libexec/PlistBuddy -c "Add :NSUbiquitousContainers dict" \
     -c "Add :NSUbiquitousContainers:$container dict" \
     -c "Add :NSUbiquitousContainers:$container:NSUbiquitousContainerIsDocumentScopePublic bool true" \
-    -c "Add :NSUbiquitousContainers:$container:NSUbiquitousContainerName string Liberty Pro Max" \
+    -c "Add :NSUbiquitousContainers:$container:NSUbiquitousContainerName string RecompIV" \
     -c "Add :NSUbiquitousContainers:$container:NSUbiquitousContainerSupportedFolderLevels string Any" \
     $app/Info.plist
 else
