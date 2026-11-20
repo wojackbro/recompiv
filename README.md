@@ -716,12 +716,10 @@ Measured on an M3 Pro at 3440×1440, maximum settings, on the same street:
 
 ## Credits
 
-- [Liberty Pro Max](https://github.com/Awis13/liberty-pro-max) by Awis13 and
-  its contributors (GPL-3.0): the codebase RecompIV is built on — the lifted
-  game code's tooling, the Metal renderer and nearly all of the fixes are
-  theirs. Bugs in RecompIV go to
-  [its issues](https://github.com/wojakbro/recompiv/issues); bugs in the port
-  itself belong upstream too, so they are fixed for everyone.
+- [Liberty Pro Max](https://github.com/Awis13/liberty-pro-max) by Awis13
+  (GPL-3.0): the codebase RecompIV is built on — the tooling for the lifted
+  game code, the Metal renderer and most of the fixes. Bugs in RecompIV go to
+  [its issues](https://github.com/wojakbro/recompiv/issues).
 - [x86recomp](https://github.com/JTM-rootstorm/x86recomp), the static
   recompiler this port is built on.
 - [FusionFix](https://github.com/ThirteenAG/GTAIV.EFLC.FusionFix) by
