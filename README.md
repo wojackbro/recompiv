@@ -4,11 +4,9 @@
 Apple silicon Macs and iPads, and experimentally on the iPhone and Apple TV:
 a Metal renderer, the episodes, about 100 fixes, saves through iCloud.**
 
-RecompIV is a fork of [Liberty Pro Max](https://github.com/Awis13/liberty-pro-max)
-by Awis13 and its contributors, who did the recompilation, the renderer and the
-fixes; that work is theirs. This fork keeps it and adds what makes it easier to
-pick up: an installer that checks the Mac and the game files before a long
-build, a test runner that needs no game data, and the original's bugs tracked in
+What RecompIV adds to the codebase it is built on: an installer that checks
+the Mac and the game files before a long build, a test runner that needs no
+game data, and the port's open bugs tracked in
 [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
 
 The game's own x86 code is statically recompiled with
@@ -30,8 +28,7 @@ Expect rough edges, and please report what you find in the
 
 RecompIV is built on your own Mac from your own copy of GTA IV. Nothing is
 prebuilt and downloadable: the build translates your own `GTAIV.exe`, so it
-cannot be shipped. This fork also does not ship the Builder app the original
-project offers; the Terminal installer is the way in.
+cannot be shipped. There is no Builder app; the Terminal installer is the way in.
 
 ```sh
 git clone https://github.com/wojakbro/recompiv
@@ -51,14 +48,14 @@ in both directions.
 
 For the iPad, the iPhone and the Apple TV, see [Install](#install).
 
-## What this fork changes
+## What RecompIV adds
 
 | | |
 |---|---|
 | **Checks first** | `./install.sh --check` (or `tools/doctor.sh`) checks macOS, the Apple silicon chip, the Command Line Tools, Homebrew, the build tools, the free space, `GTAIV.exe`'s SHA-256, the game's `pc` and `common` folders, the episodes' file lists and `commandline.txt`, and names what is missing instead of failing halfway through a 15-minute build |
 | **Tests without the game** | `tools/test.sh` builds and runs every unit test and the tools' Python tests with nothing but the Command Line Tools: no game files, no SDL3, no FFmpeg, no CMake configure |
 | **Runtime pinned, fetchable alone** | `tools/fetch_runtime.sh` fetches the x86recomp commit in `X86RECOMP` by itself, for tests and for a build without the rest of the installer |
-| **Bugs tracked** | The original's open issues, and what this fork does about each, are in [KNOWN-ISSUES.md](KNOWN-ISSUES.md) |
+| **Bugs tracked** | The port's open issues, and what RecompIV does about each, are in [KNOWN-ISSUES.md](KNOWN-ISSUES.md) |
 | **Names** | The app is `RecompIV.app` (bundle id `io.github.wojakbro.recompiv`, iCloud container and iOS/tvOS profiles renamed with it). The options, the log (`~/Library/Logs/gtaiv.log`), the saves folder and the `GTAIV_*` environment variables keep the original's names, so anything written for Liberty Pro Max applies here |
 
 Nothing else is different: the same lifted code path, the same renderer, the
@@ -125,7 +122,7 @@ iPad's touch controls are there too, but small on a phone).
 
 ### Mac, with the Builder
 
-This fork ships no Builder build. The Builder source is still here
+RecompIV ships no Builder build. The Builder source is still here
 (`builder/make_builder.sh`), and it needs the same Homebrew tools as
 `install.sh` plus full Xcode; see [Quick start](#quick-start) for the
 installer instead.
@@ -634,7 +631,7 @@ keyboard lighting, graphics API choice and plugin loaders have nothing to do.
 
 ## Known issues
 
-The original's open reports and what this fork has done about each are in
+The port's open reports and what RecompIV does about each are in
 [KNOWN-ISSUES.md](KNOWN-ISSUES.md). The port's own limits:
 
 - Mac, iPad and (experimental) iPhone and Apple TV for now. Linux and the Steam Deck are planned.
@@ -720,10 +717,11 @@ Measured on an M3 Pro at 3440×1440, maximum settings, on the same street:
 ## Credits
 
 - [Liberty Pro Max](https://github.com/Awis13/liberty-pro-max) by Awis13 and
-  its contributors: the port this one is forked from, and nearly all of what
-  is here. Report bugs in *this* fork to
-  [its issues](https://github.com/wojakbro/recompiv/issues); report what is
-  wrong with the port itself upstream too, so it is fixed for everyone.
+  its contributors (GPL-3.0): the codebase RecompIV is built on — the lifted
+  game code's tooling, the Metal renderer and nearly all of the fixes are
+  theirs. Bugs in RecompIV go to
+  [its issues](https://github.com/wojakbro/recompiv/issues); bugs in the port
+  itself belong upstream too, so they are fixed for everyone.
 - [x86recomp](https://github.com/JTM-rootstorm/x86recomp), the static
   recompiler this port is built on.
 - [FusionFix](https://github.com/ThirteenAG/GTAIV.EFLC.FusionFix) by
