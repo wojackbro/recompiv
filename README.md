@@ -42,9 +42,9 @@ full run installs the build tools from Homebrew, fetches the pinned x86recomp,
 checks your `GTAIV.exe`, translates the game's code, builds, and puts
 **RecompIV** in `/Applications`: open it, check the options, press **Play**.
 
-RecompIV and Liberty Pro Max use the same saves folder
-(`~/Library/Application Support/gtaiv`), so saves carry over between them
-in both directions.
+Saves and settings live in `~/Library/Application Support/gtaiv`. That path has
+not changed, so an existing install's saves are picked up as they are and stay
+where scripts and backups expect them.
 
 For the iPad, the iPhone and the Apple TV, see [Install](#install).
 
@@ -56,7 +56,7 @@ For the iPad, the iPhone and the Apple TV, see [Install](#install).
 | **Tests without the game** | `tools/test.sh` builds and runs every unit test and the tools' Python tests with nothing but the Command Line Tools: no game files, no SDL3, no FFmpeg, no CMake configure |
 | **Runtime pinned, fetchable alone** | `tools/fetch_runtime.sh` fetches the x86recomp commit in `X86RECOMP` by itself, for tests and for a build without the rest of the installer |
 | **Bugs tracked** | The port's open issues, and what RecompIV does about each, are in [KNOWN-ISSUES.md](KNOWN-ISSUES.md) |
-| **Names** | The app is `RecompIV.app` (bundle id `io.github.wojakbro.recompiv`, iCloud container and iOS/tvOS profiles renamed with it). The options, the log (`~/Library/Logs/gtaiv.log`), the saves folder and the `GTAIV_*` environment variables keep the original's names, so anything written for Liberty Pro Max applies here |
+| **Names** | The app is `RecompIV.app` (bundle id `io.github.wojakbro.recompiv`, iCloud container and iOS/tvOS profiles renamed with it). The options, the log (`~/Library/Logs/gtaiv.log`), the saves folder and the `GTAIV_*` environment variables use the names the port has always used, so existing scripts, launch agents and saved settings keep working |
 
 Nothing else is different: the same lifted code path, the same renderer, the
 same fixes, the same game.
@@ -736,7 +736,7 @@ Grand Theft Auto IV is a trademark of Take-Two Interactive Software. This
 project is not affiliated with or endorsed by Rockstar Games or Take-Two.
 
 **Rights holders:** to have anything here taken down, open an
-[issue](https://github.com/Awis13/liberty-pro-max/issues) in this repository.
+[issue](https://github.com/wojakbro/recompiv/issues) in this repository.
 It will be taken down on request, without dispute.
 
 ## License
